@@ -330,7 +330,7 @@ export default function CameraPreview({
         />
 
         {isStreaming && connectionStatus !== 'connected' && (
-          <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-lg backdrop-blur-sm transition-all duration-300">
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-lg backdrop-blur-sm transition-all duration-300 z-10">
             <div className="text-center space-y-3 px-4 md:px-6 py-3 md:py-4 bg-black/40 rounded-2xl backdrop-blur-md">
               <div className="animate-spin rounded-full h-8 w-8 md:h-10 md:w-10 border-3 border-white border-t-transparent mx-auto" />
               <p className="text-white font-semibold text-base md:text-lg">
@@ -343,21 +343,38 @@ export default function CameraPreview({
           </div>
         )}
 
+        {!isStreaming && (
+          <div className="absolute inset-0 bg-gray-900 flex items-center justify-center rounded-lg z-10 p-4">
+            <div className="text-center space-y-6 max-w-sm w-full bg-white/10 p-6 md:p-8 rounded-2xl backdrop-blur-md border border-white/20">
+              <div className="mx-auto w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mb-2">
+                <Video className="h-8 w-8 text-emerald-400" />
+              </div>
+              <div>
+                <h3 className="text-white text-xl font-bold mb-2">Balaram AI</h3>
+                <p className="text-gray-300 text-sm">
+                  Click below to grant camera and microphone permissions and start your session.
+                </p>
+              </div>
+              <Button 
+                onClick={toggleCamera}
+                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-6 rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]"
+              >
+                Start Balaram AI
+              </Button>
+            </div>
+          </div>
+        )}
+
         <div className="absolute bottom-4 md:bottom-6 left-0 right-0 flex justify-center items-center space-x-3 md:space-x-4">
-          <Button
-            onClick={toggleCamera}
-            size="icon"
-            className={`rounded-full w-12 h-12 md:w-14 md:h-14 shadow-lg backdrop-blur-md transition-all duration-300 transform hover:scale-105
-              ${isStreaming
-                ? 'bg-red-500/80 hover:bg-red-600/90 text-white'
-                : 'bg-emerald-500/80 hover:bg-emerald-600/90 text-white'
-              }`}
-          >
-            {isStreaming ?
-              <VideoOff className="h-6 w-6 md:h-7 md:w-7 transition-transform duration-200" /> :
-              <Video className="h-6 w-6 md:h-7 md:w-7 transition-transform duration-200" />
-            }
-          </Button>
+          {isStreaming && (
+            <Button
+              onClick={toggleCamera}
+              size="icon"
+              className="rounded-full w-12 h-12 md:w-14 md:h-14 shadow-lg backdrop-blur-md transition-all duration-300 transform hover:scale-105 bg-red-500/80 hover:bg-red-600/90 text-white"
+            >
+              <VideoOff className="h-6 w-6 md:h-7 md:w-7 transition-transform duration-200" />
+            </Button>
+          )}
 
           {isStreaming && (
             <Button
